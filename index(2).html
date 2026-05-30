@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soldertronics — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000;
+      --surface: #111;
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.14);
+      --text-primary: #f5f5f7;
+      --text-secondary: rgba(245,245,247,0.55);
+      --text-tertiary: rgba(245,245,247,0.32);
+      --accent: #f5f5f7;
+      --accent-dim: rgba(245,245,247,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3rem;
+      height: 52px;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fade-in 0.6s ease forwards 0.1s;
+    }
+
+    .nav-logo {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+
+    .nav-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      opacity: 0.7;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* ── PAGE ── */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 3rem 4rem;
+    }
+
+    /* ── LAYOUT ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    /* ── LEFT CONTENT ── */
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      opacity: 0;
+      animation: slide-up 0.6s ease forwards 0.4s;
+    }
+
+    .headline {
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      opacity: 0;
+      animation: slide-up 0.6s ease forwards 0.55s;
+    }
+
+    .headline em {
+      font-style: normal;
+      color: var(--text-secondary);
+    }
+
+    .subline {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 36ch;
+      opacity: 0;
+      animation: slide-up 0.6s ease forwards 0.7s;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--border-strong);
+      opacity: 0;
+      animation: slide-up 0.6s ease forwards 0.8s;
+    }
+
+    /* ── SOCIAL ── */
+    .social-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      opacity: 0;
+      animation: slide-up 0.6s ease forwards 0.9s;
+    }
+
+    .social-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 980px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .social-btn:hover {
+      background: var(--accent-dim);
+      border-color: rgba(255,255,255,0.28);
+      color: var(--text-primary);
+    }
+
+    .social-btn svg {
+      width: 13px; height: 13px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* ── iPOD SIDE ── */
+    .ipod-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fade-in 1s ease forwards 0.6s;
+    }
+
+    .ipod-svg {
+      width: min(300px, 86vw);
+      filter: drop-shadow(0 40px 80px rgba(255,255,255,0.06)) drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+    }
+
+    /* Wheel spin */
+    .wheel-ring {
+      transform-origin: 140px 310px;
+      animation: slow-spin 22s linear infinite;
+    }
+
+    @keyframes slow-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Screen flicker-on */
+    .screen-g {
+      opacity: 0;
+      animation: screen-on 1.2s ease forwards 1.4s;
+    }
+
+    @keyframes screen-on {
+      0%   { opacity: 0; }
+      25%  { opacity: 0.5; }
+      40%  { opacity: 0.1; }
+      100% { opacity: 1; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3rem;
+      height: 44px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fade-in 0.6s ease forwards 1.2s;
+    }
+
+    footer span {
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+    }
+
+    footer nav {
+      position: static;
+      height: auto;
+      padding: 0;
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      gap: 2rem;
+      opacity: 1;
+      animation: none;
+    }
+
+    footer nav a {
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer nav a:hover { color: var(--text-primary); }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 780px) {
+      nav, footer { padding: 0 1.5rem; }
+
+      .page { padding: 5rem 1.5rem 4rem; }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+        text-align: center;
+      }
+
+      .content { align-items: center; }
+      .subline  { max-width: 100%; }
+      .divider  { width: 24px; }
+      .social-links { justify-content: center; }
+
+      .ipod-wrap { order: -1; }
+
+      footer { flex-direction: column; justify-content: center; gap: 0.25rem; height: auto; padding: 0.75rem 1.5rem; }
+    }
+
+    @media (max-width: 420px) {
+      .headline { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">Soldertronics</div>
+  <div class="nav-badge">
+    <span class="nav-dot"></span>
+    In development
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="page">
+  <div class="grid">
+
+    <!-- Left -->
+    <div class="content">
+      <p class="eyebrow">Revival Protocol &nbsp;·&nbsp; 2025</p>
+
+      <h1 class="headline">Old tech.<br><em>Reborn.</em></h1>
+
+      <p class="subline">
+        Iconic hardware rebuilt from silicon up. Analog soul, digital precision — for the era that deserves it.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="social-wrap">
+        <p class="social-label">Find us on</p>
+        <div class="social-links">
+
+          <a href="#" class="social-btn" aria-label="TikTok">
+            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+            TikTok
+          </a>
+
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.45A3.02 3.02 0 0 0 .5 6.19 31.7 31.7 0 0 0 .05 12a31.7 31.7 0 0 0 .45 5.81 3.02 3.02 0 0 0 2.12 2.14C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.45a3.02 3.02 0 0 0 2.12-2.14A31.7 31.7 0 0 0 23.95 12a31.7 31.7 0 0 0-.45-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+            YouTube
+          </a>
+
+          <a href="#" class="social-btn" aria-label="Vinted">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-.5 14.5L7 9h2.5l2 5.2 2-5.2H16l-4.5 7.5z"/></svg>
+            Vinted
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: iPod -->
+    <div class="ipod-wrap">
+      <svg class="ipod-svg" viewBox="0 0 280 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Body gradient: white-silver -->
+          <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#ffffff"/>
+            <stop offset="45%"  stop-color="#e8e8ea"/>
+            <stop offset="100%" stop-color="#d0d0d5"/>
+          </linearGradient>
+
+          <!-- Body side shadow -->
+          <linearGradient id="bodySide" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#aaaaaf" stop-opacity="0.6"/>
+            <stop offset="8%"   stop-color="transparent"/>
+            <stop offset="92%"  stop-color="transparent"/>
+            <stop offset="100%" stop-color="#909095" stop-opacity="0.6"/>
+          </linearGradient>
+
+          <!-- Wheel gradient: light silver -->
+          <radialGradient id="wheelGrad" cx="38%" cy="32%" r="68%">
+            <stop offset="0%"   stop-color="#f0f0f2"/>
+            <stop offset="55%"  stop-color="#d8d8dc"/>
+            <stop offset="100%" stop-color="#b8b8c0"/>
+          </radialGradient>
+
+          <!-- Center button gradient -->
+          <radialGradient id="centerGrad" cx="38%" cy="32%" r="68%">
+            <stop offset="0%"   stop-color="#e8e8ec"/>
+            <stop offset="100%" stop-color="#c8c8d0"/>
+          </radialGradient>
+
+          <!-- Screen glass -->
+          <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#0a0a0c"/>
+            <stop offset="100%" stop-color="#050507"/>
+          </linearGradient>
+
+          <!-- Screen top reflection -->
+          <linearGradient id="screenReflect" x1="20%" y1="0%" x2="80%" y2="100%">
+            <stop offset="0%"   stop-color="white" stop-opacity="0.12"/>
+            <stop offset="60%"  stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+
+          <!-- Wheel highlight arc -->
+          <linearGradient id="wheelShine" x1="15%" y1="5%" x2="85%" y2="95%">
+            <stop offset="0%"   stop-color="white" stop-opacity="0.7"/>
+            <stop offset="40%"  stop-color="white" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+
+          <!-- Drop shadow filter -->
+          <filter id="deviceShadow" x="-10%" y="-5%" width="120%" height="115%">
+            <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000" flood-opacity="0.55"/>
+            <feDropShadow dx="0" dy="1" stdDeviation="2"  flood-color="#000" flood-opacity="0.3"/>
+          </filter>
+
+          <!-- Wheel tick ring clip -->
+          <clipPath id="wheelClip">
+            <circle cx="140" cy="310" r="88"/>
+          </clipPath>
+        </defs>
+
+        <!-- ── BODY ── -->
+        <g filter="url(#deviceShadow)">
+          <!-- Main body fill -->
+          <rect x="18" y="10" width="244" height="420" rx="30" fill="url(#bodyGrad)"/>
+          <!-- Side shadow overlay -->
+          <rect x="18" y="10" width="244" height="420" rx="30" fill="url(#bodySide)"/>
+          <!-- Subtle inner border -->
+          <rect x="18" y="10" width="244" height="420" rx="30" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
+        </g>
+
+        <!-- ── SCREEN RECESS ── -->
+        <!-- Inset shadow around screen -->
+        <rect x="37" y="30" width="206" height="156" rx="12" fill="rgba(0,0,0,0.18)"/>
+        <!-- Screen glass -->
+        <rect x="39" y="32" width="202" height="152" rx="11" fill="url(#screenGrad)"/>
+        <!-- Screen inner border -->
+        <rect x="39" y="32" width="202" height="152" rx="11" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="0.5"/>
+
+        <!-- ── SCREEN CONTENT ── -->
+        <g class="screen-g">
+          <!-- "COMING IN" header row -->
+          <rect x="39" y="32" width="202" height="22" rx="11" fill="rgba(255,255,255,0.04)"/>
+          <text x="140" y="47" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="7.5" font-weight="500"
+            letter-spacing="3" fill="rgba(255,255,255,0.35)">COMING IN</text>
+
+          <!-- Separator -->
+          <line x1="55" y1="54" x2="225" y2="54" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+          <!-- Days big number -->
+          <text id="s-days" x="140" y="97" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="40" font-weight="300"
+            letter-spacing="-2" fill="#ffffff">00</text>
+
+          <!-- Days label -->
+          <text x="140" y="111" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="6" font-weight="400"
+            letter-spacing="3.5" fill="rgba(255,255,255,0.3)">DAYS</text>
+
+          <!-- Separator -->
+          <line x1="55" y1="118" x2="225" y2="118" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+
+          <!-- HH MM SS -->
+          <text id="s-hours" x="82" y="140" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="19" font-weight="200"
+            fill="rgba(255,255,255,0.85)">00</text>
+          <text x="108" y="138" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="9" font-weight="300"
+            fill="rgba(255,255,255,0.2)">:</text>
+          <text id="s-mins" x="140" y="140" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="19" font-weight="200"
+            fill="rgba(255,255,255,0.85)">00</text>
+          <text x="172" y="138" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="9" font-weight="300"
+            fill="rgba(255,255,255,0.2)">:</text>
+          <text id="s-secs" x="198" y="140" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="19" font-weight="200"
+            fill="rgba(255,255,255,0.85)">00</text>
+
+          <!-- HRS MIN SEC micro labels -->
+          <text x="82"  y="151" text-anchor="middle" font-family="'Inter',-apple-system,sans-serif" font-size="5" letter-spacing="2" fill="rgba(255,255,255,0.2)">HRS</text>
+          <text x="140" y="151" text-anchor="middle" font-family="'Inter',-apple-system,sans-serif" font-size="5" letter-spacing="2" fill="rgba(255,255,255,0.2)">MIN</text>
+          <text x="198" y="151" text-anchor="middle" font-family="'Inter',-apple-system,sans-serif" font-size="5" letter-spacing="2" fill="rgba(255,255,255,0.2)">SEC</text>
+
+          <!-- Bottom branding -->
+          <text x="140" y="174" text-anchor="middle"
+            font-family="'Inter',-apple-system,sans-serif" font-size="5.5" font-weight="400"
+            letter-spacing="3" fill="rgba(255,255,255,0.15)">SOLDERTRONICS</text>
+        </g>
+
+        <!-- Screen glass reflection -->
+        <rect x="39" y="32" width="202" height="152" rx="11" fill="url(#screenReflect)"/>
+
+        <!-- ── WHEEL AREA ── -->
+        <!-- Wheel outer shadow ring -->
+        <circle cx="140" cy="310" r="110" fill="rgba(0,0,0,0.08)"/>
+
+        <!-- Wheel base -->
+        <circle cx="140" cy="310" r="106" fill="url(#wheelGrad)"/>
+        <circle cx="140" cy="310" r="106" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="0.75"/>
+
+        <!-- Animated tick ring -->
+        <g class="wheel-ring">
+          <circle cx="140" cy="310" r="97" fill="none"
+            stroke="rgba(0,0,0,0.08)" stroke-width="1"
+            stroke-dasharray="2.5 14.2"/>
+        </g>
+
+        <!-- Wheel surface with shine -->
+        <circle cx="140" cy="310" r="90" fill="url(#wheelGrad)"/>
+        <circle cx="140" cy="310" r="90" fill="url(#wheelShine)" opacity="0.5"/>
+        <circle cx="140" cy="310" r="90" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+
+        <!-- MENU label -->
+        <text x="140" y="242" text-anchor="middle"
+          font-family="'Inter',-apple-system,sans-serif" font-size="8" font-weight="500"
+          letter-spacing="1.5" fill="rgba(0,0,0,0.4)">MENU</text>
+
+        <!-- Play/Pause (bottom) -->
+        <polygon points="131,373 131,384 142,378.5" fill="rgba(0,0,0,0.35)"/>
+        <rect x="144" y="373" width="3"   height="11" rx="1" fill="rgba(0,0,0,0.35)"/>
+        <rect x="149.5" y="373" width="3" height="11" rx="1" fill="rgba(0,0,0,0.35)"/>
+
+        <!-- Back (left) -->
+        <polygon points="72,315 84,308 84,322"  fill="rgba(0,0,0,0.35)"/>
+        <rect x="68" y="308" width="4" height="14" rx="1" fill="rgba(0,0,0,0.35)"/>
+
+        <!-- Forward (right) -->
+        <polygon points="208,315 196,308 196,322" fill="rgba(0,0,0,0.35)"/>
+        <rect x="208" y="308" width="4" height="14" rx="1" fill="rgba(0,0,0,0.35)"/>
+
+        <!-- Center button -->
+        <circle cx="140" cy="310" r="33" fill="rgba(0,0,0,0.07)"/>
+        <circle cx="140" cy="310" r="30" fill="url(#centerGrad)"/>
+        <circle cx="140" cy="310" r="30" fill="url(#wheelShine)" opacity="0.4"/>
+        <circle cx="140" cy="310" r="30" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"/>
+
+        <!-- ── TOP DETAILS ── -->
+        <!-- Headphone jack -->
+        <circle cx="97" cy="14" r="5"   fill="rgba(0,0,0,0.25)"/>
+        <circle cx="97" cy="14" r="3"   fill="rgba(0,0,0,0.5)"/>
+        <circle cx="97" cy="14" r="1.2" fill="#111"/>
+
+        <!-- Hold switch track -->
+        <rect x="152" y="11" width="26" height="7" rx="3.5" fill="rgba(0,0,0,0.15)" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"/>
+        <circle cx="162" cy="14.5" r="3" fill="rgba(255,255,255,0.7)"/>
+
+        <!-- ── SIDE BUTTONS ── -->
+        <rect x="14" y="128" width="4" height="24" rx="2" fill="rgba(0,0,0,0.18)" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+        <rect x="14" y="158" width="4" height="24" rx="2" fill="rgba(0,0,0,0.18)" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+
+        <!-- ── DOCK CONNECTOR ── -->
+        <rect x="112" y="422" width="56" height="5" rx="2.5" fill="rgba(0,0,0,0.12)" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+        <rect x="121" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+        <rect x="128" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+        <rect x="135" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+        <rect x="142" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+        <rect x="149" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+        <rect x="156" y="422" width="4" height="5" rx="1" fill="rgba(0,0,0,0.18)"/>
+
+      </svg>
+    </div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <span>© 2025 Soldertronics</span>
+  <nav>
+    <a href="#">Instagram</a>
+    <a href="#">X</a>
+    <a href="#">Contact</a>
+  </nav>
+</footer>
+
+<script>
+  const target = new Date();
+  target.setDate(target.getDate() + 87);
+  target.setHours(0, 0, 0, 0);
+
+  const pad = n => String(n).padStart(2, '0');
+
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      ['s-days','s-hours','s-mins','s-secs'].forEach(id => document.getElementById(id).textContent = '00');
+      return;
+    }
+    document.getElementById('s-days').textContent  = pad(Math.floor(diff / 86400000));
+    document.getElementById('s-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('s-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('s-secs').textContent  = pad(Math.floor((diff % 60000) / 1000));
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
